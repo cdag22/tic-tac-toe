@@ -1,5 +1,9 @@
+/*--------------------------------------------------------------------------- 
+ * PAGE WIDE
+ */
 body {
   font-family: 'Raleway', sans-serif;
+  font-family: 'Work Sans', sans-serif;
   font-size: 16px;
   font-weight: 300;
   background: linear-gradient(180deg, #f5f5f5, #ece1e0);
@@ -12,6 +16,9 @@ body {
   margin: auto;
 }
 
+/*--------------------------------------------------------------------------- 
+ * TABLE
+ */
 table {
   border-collapse: separate;
   border-spacing: 2px;
@@ -31,6 +38,73 @@ td {
   background: #202428;
 }
 
+td:hover {
+  box-shadow: 0 0.75rem 3rem rgba(0, 0, 0, 0.8);
+}
+
+.col-1 {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+}
+/*--------------------------------------------------------------------------- 
+ * TABLE
+ */
+.board-row {
+  display:flex;
+  justify-content: center;
+  align-items: center;
+  width: 24.3rem;
+  height: 8.2rem;
+  /* border-collapse: separate; */
+  /* border-spacing: 2px; */
+  margin: auto;  
+}
+
+.square {
+  height: 8rem;
+  width: 8rem;
+  margin: .1rem;
+  text-align: center;
+  font-size: 4.8rem;
+  color: #f5f5f5;
+  background: #202428;
+}
+
+/* .square:hover {
+  background: #fd7310;
+  background: #38f3e0;
+} */
+
+.square:hover {
+  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.8);
+}
+
+.col-1 {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+  margin: auto;
+}
+
+
+/*--------------------------------------------------------------------------- 
+ * BUTTON
+ */
+.gravity-btn {
+  margin: auto;
+  box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
+}
+
+.gravity-btn:focus {
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
+}
+
+
+/*--------------------------------------------------------------------------- 
+ * HEADER
+ */
 .jumbotron {
   display: flex;
   justify-content: center;
@@ -46,12 +120,24 @@ td {
 #x-wins,
 #x {
   color: #fc5255;
+  text-shadow: 0.15rem 0.15rem 0rem rgba(182, 58, 60, 0.7);
 }
 
 #o-wins,
 #o {
   color: #11c9e9;
+  text-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
+  text-shadow: 0.15rem 0.15rem 0rem rgba(15, 151, 175, 0.7);
 }
+
+.display-3 {
+  text-shadow: 0.15rem 0.15rem 0rem rgba(0, 0, 0, 0.7);
+}
+
+
+/*--------------------------------------------------------------------------- 
+ * COLORS
+ */
 
 .text-white {
   color: #f5f5f5;

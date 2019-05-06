@@ -5,11 +5,11 @@ window.onload = function () {
   // HELPER FUNCTIONS
 
   const getColumn = function (n) {
-    return document.querySelectorAll(`tr td:nth-child(${n}`);
+    return document.querySelectorAll(`.board-row .square:nth-child(${n}`);
   };
 
   const getSquare = function (row, col) {
-    return document.querySelectorAll(`tr:nth-child(${row}) td:nth-child(${col})`);
+    return document.querySelectorAll(`.board-row:nth-child(${row}) .square:nth-child(${col})`);
   };
 
   const convertToArray = function (arrayLike) {
@@ -128,7 +128,7 @@ window.onload = function () {
     //---------------------------------------------------------------------------
     // GLOBALS
     squares: document.getElementsByClassName('square'),
-    rows: document.getElementsByTagName('tr'),
+    rows: document.getElementsByClassName('board-row'),
     columns: [getColumn(1), getColumn(2), getColumn(3)],
     leftDiagonal: [getSquare(1, 1), getSquare(2, 2), getSquare(3, 3)],
     rightDiagonal: [getSquare(3, 1), getSquare(2, 2), getSquare(1, 3)],
@@ -182,6 +182,6 @@ window.onload = function () {
   //---------------------------------------------------------------------------
   // INITIALIZE
 
-  State.getPlayerNames();
+  // State.getPlayerNames();
   UserInput.makeSquaresInteractive();
 };
