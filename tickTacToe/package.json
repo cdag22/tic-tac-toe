@@ -1,0 +1,14 @@
+{
+  "name": "ticktactoe",
+  "version": "1.0.0",
+  "description": "a simple tick tac toe game",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "cj dagostino",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
