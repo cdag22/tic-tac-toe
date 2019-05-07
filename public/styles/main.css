@@ -49,7 +49,7 @@ td:hover {
   margin: auto;
 }
 /*--------------------------------------------------------------------------- 
- * TABLE
+ * BOARD
  */
 .board-row {
   display:flex;
@@ -70,6 +70,8 @@ td:hover {
   font-size: 4.8rem;
   color: #f5f5f5;
   background: #202428;
+  box-shadow: inset 0 .9rem 2rem rgba(0, 0, 0, .4);
+  text-shadow: 0 0.25rem 0.25rem rgba(0, 0, 0, 0.3);
 }
 
 /* .square:hover {
@@ -114,7 +116,7 @@ td:hover {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
 }
 
-<<<<<<< HEAD.rotation-button:target,
+.rotation-button:target,
 .gravity-button:target {
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0);
 }
@@ -134,27 +136,35 @@ td:hover {
   align-items: center;
   height: 20vh;
   background: #202428;
+  background: linear-gradient(0deg, #11c9e9, #fc5255);
+  background: linear-gradient(0deg, #11c9e9, #11c9e9);
+  background: linear-gradient(135deg, #fa749f, #fc5255);
+  background: linear-gradient(135deg, #38f3e0, #2dce9b);
   /* border-bottom: 5px solid #202428; */
   /* color: #202428; */
   color: #f5f5f5;
-  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
+  color: #202428;
+  box-shadow: inset 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
 }
 
 #x-wins,
 #x {
   color: #fc5255;
-  text-shadow: 0.15rem 0.15rem 0rem rgba(182, 58, 60, 0.7);
+  color: #202428;
+  /* text-shadow: 0.15rem 0.15rem 0rem rgba(182, 58, 60, 0.7); */
+  text-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
 }
 
 #o-wins,
 #o {
   color: #11c9e9;
+  color: #202428;
   text-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
-  text-shadow: 0.15rem 0.15rem 0rem rgba(15, 151, 175, 0.7);
+  /* text-shadow: 0.15rem 0.15rem 0rem rgba(15, 151, 175, 0.7); */
 }
 
 .display-3 {
-  text-shadow: 0.15rem 0.15rem 0rem rgba(0, 0, 0, 0.7);
+  text-shadow: 0.15rem 0.15rem 1rem rgba(0, 0, 0, 0.3);
 }
 
 
