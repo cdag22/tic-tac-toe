@@ -139,7 +139,7 @@ window.onload = function () {
     },
     // Board Rotation
     rotateBoard90deg: function () {
-      let rows = Presentation.rowChildren;
+      let rows = Presentation.updateRowChildren();
 
       // corner roation
       rows[0][0].before(rows[2][0]);
@@ -162,64 +162,30 @@ window.onload = function () {
       Presentation.updateRowChildren();
       Presentation.updateColumnChildren();
     },
-    isSquareOccupied: function (rowIndex, colIndex) {
-      let sq = Presentation.rowChildren[rowIndex][colIndex];
+    isSquareOccupied: function (sq) {
       return sq.classList.contains('red-bg') || sq.classList.contains('blue-bg');
     },
     giveBoardGravity: function (square) {
-      let column = buildColumnFromSquare(square);
       let rows = Presentation.updateRowChildren();
-      let id = Number(square.id);
-      let rowIndex = (id % 3 === 0) ? 2 : (id % 3) - 1;
-      let colIndex = id < 4 ? 0 : (id < 7 ? 1 : 2);
-      // rowIndex++;
-      // while (!State.isSquareOccupied(rowIndex, colIndex) && rowIndex < 2) {
-      //   rows[rowIndex][colIndex].before(rows[rowIndex - 1][colIndex])
-      //   rows = Presentation.updateRowChildren();
-      //   rows[rowIndex - 1][colIndex].before(rows[rowIndex][colIndex + 1]);
-      //   rows = Presentation.updateRowChildren();
-      //   rowIndex++;
-      // }
-      console.log('row/col', rowIndex, '/', colIndex);
-      console.log('rows', rows);
-      Presentation.updateFullRows();
-      let cols = Presentation.updateColumns();
-      console.log('cols', cols);
-      for (let i = 0; i < cols.length; i++) {
-        let target = null;
-        for (let k = 0; k < cols[i].length; k++) {
-          let item = cols[i][k];
-          if (item.classList.contains('red-bg') || item.classList.contains('blue-bg')) {
-            target = item;
-            let targetI = i;
-            let targetK = k;
-            k++
-            while (k < cols.length) {
-              item = cols[i][k];
-              if (!item.classList.contains('red-bg') && !item.classList.contains('blue-bg')) {
-                if (i > 0) {
-                  item.before(target);
-                  cols[i - 1][targetK].after(item);
-                  // } else {
-                  //   item.after(target);
-                  //   console.log(Presentation.updateColumns());
-                  //   debugger;
-                  //   cols[0][targetK].before(cols[0][targetK]);
-                  //   break;
-                  //   // cols[i][targetK].before(item);
-                }
-                targetK++;
-                k++;
-              } else {
-                break;
-              }
+      for (let i = 0; i < rows.length; i++) {
+        let row = rows[i];
+        for (let k = 0; k < row.length; k++) {
+          if (State.isSquareOccupied(rows[i][k])) {
+            let target = rows[i][k];
+            k++;
+            rows = Presentation.updateRowChildren();
+            console.log('rows', rows);
+            // break;
+            while (k < row.length && !State.isSquareOccupied(rows[i][k])) {
+              row[k].after(target);
+              k++;
+              rows = Presentation.updateRowChildren();
             }
             break;
           }
         }
       }
-      cols = Presentation.updateColumns();
-      console.log('cols', cols); ster
+      State.rotateBoard90deg();
     }
   };
 
