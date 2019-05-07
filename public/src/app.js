@@ -46,25 +46,11 @@ window.onload = function () {
       shouldBoardRotate: false,
       shouldHaveGravity: false,
     },
-<<<<<<< HEAD
-=======
     // initialize and board reset
->>>>>>> master
     initialize: function () {
       // State.getPlayerNames();
       UserInput.initialize();
       Presentation.initialize();
-<<<<<<< HEAD
-=======
-    },
-    resetBoard: function (winner) {
-      State.setWinnerGoesFirst(winner);
-      State.emptySquares();
-      UserInput.initialize();
-      Presentation.initialize();
-      State.incrementScore(winner);
-      State.updateScoreBoard();
->>>>>>> master
     },
     // MOVE SWAPPING FUNCTIONALITY
     getTextContent: function () {
@@ -109,7 +95,6 @@ window.onload = function () {
         State.GameState.oWins++;
       }
     },
-<<<<<<< HEAD
     resetBoard: function (winner) {
       State.setWinnerGoesFirst(winner);
       State.emptySquares();
@@ -120,8 +105,7 @@ window.onload = function () {
       State.GameState.shouldHaveGravity = false;
       State.GameState.shouldBoardRotate = false;
     },
-=======
->>>>>>> master
+    master
     getPlayerNames: function () {
       State.PlayerState.xName = prompt('Name of X:');
       State.PlayerState.oName = prompt('Name of O: ');
@@ -130,11 +114,7 @@ window.onload = function () {
     },
     // WIN CALCULATION
     isVerticalWin: function () {
-<<<<<<< HEAD
       let colValues = Presentation.columnChildren.map(col => convertToArray(col).map(item => item.textContent));
-=======
-      let colValues = Presentation.columns.map(col => col.map(item => item.textContent));
->>>>>>> master
       return colValues.some(col => col.every(value => value === col[0] && col[0] !== ''));
     },
     isHorizontalWin: function () {
@@ -184,7 +164,6 @@ window.onload = function () {
       rows[1][0].before(rows[2][2]);
       rows = Presentation.updateRowChildren();
       rows[0][1].before(rows[1][1]);
-<<<<<<< HEAD
       Presentation.updateRowChildren();
       Presentation.updateColumnChildren();
     },
@@ -208,11 +187,7 @@ window.onload = function () {
       // }
       console.log('row/col', rowIndex, '/', colIndex);
       console.log('rows', rows);
-
-=======
       Presentation.updateFullRows();
-    },
-    gravityDrop: function () {
       let cols = Presentation.updateColumns();
       console.log('cols', cols);
       for (let i = 0; i < cols.length; i++) {
@@ -249,8 +224,7 @@ window.onload = function () {
         }
       }
       cols = Presentation.updateColumns();
-      console.log('cols', cols);
->>>>>>> master
+      console.log('cols', cols); ster
     }
   };
 
@@ -263,13 +237,10 @@ window.onload = function () {
     // GLOBALS
     squares: document.getElementsByClassName('square'),
     rows: document.getElementsByClassName('board-row'),
-<<<<<<< HEAD
+
     rowChildren: null,
     columnChildren: null,
-=======
-    fullRows: null,
-    columns: null,
->>>>>>> master
+
     leftDiagonal: [getSquare(1, 1), getSquare(2, 2), getSquare(3, 3)],
     rightDiagonal: [getSquare(3, 1), getSquare(2, 2), getSquare(1, 3)],
     xScore: document.getElementById('x-wins'),
@@ -278,7 +249,6 @@ window.onload = function () {
     oNameplate: document.getElementById('o'),
     gravityButton: document.getElementById('gravity-btn'),
     rotationButton: document.getElementById('rotation-btn'),
-<<<<<<< HEAD
     updateRowChildren: function () {
       let rows = Presentation.rows;
       Presentation.rowChildren = convertToArray(rows).map(item => convertToArray(item.children));
@@ -296,24 +266,7 @@ window.onload = function () {
       Presentation.rotationButton.classList.remove('unclickable');
       Presentation.gravityButton.disabled = false;
       Presentation.rotationButton.disabled = false;
-=======
-    updateFullRows: function () {
-      let rows = Presentation.rows;
-      Presentation.fullRows = convertToArray(rows).map(item => convertToArray(item.children));
-      return Presentation.fullRows;
-    },
-    updateColumns: function () {
-      Presentation.columns = [convertToArray(getColumn(1)), convertToArray(getColumn(2)), convertToArray(getColumn(3)), convertToArray(getColumn(4))];
-      return Presentation.columns;
-    },
-    initialize: function () {
-      Presentation.updateFullRows();
-      Presentation.updateColumns();
-      Presentation.gravityButton.disabled = false;
-      Presentation.gravityButton.classList.remove('unclickable');
-      Presentation.rotationButton.disabled = false;
-      Presentation.rotationButton.classList.remove('unclickable');
->>>>>>> master
+
     }
   };
 
@@ -350,31 +303,19 @@ window.onload = function () {
       this.textContent = currentPlayer;
       State.GameState.moveCount++;
       if (State.GameState.moveCount > 0 && State.GameState.moveCount < 2) {
-<<<<<<< HEAD
         Presentation.gravityButton.removeEventListener('click', UserInput.gravityClickHandler, { once: true });
         Presentation.rotationButton.removeEventListener('click', UserInput.rotationClickHandler, { once: true });
         Presentation.gravityButton.classList.add('unclickable');
         Presentation.rotationButton.classList.add('unclickable');
         Presentation.gravityButton.disabled = true;
         Presentation.rotationButton.disabled = true;
-=======
-        Presentation.gravityButton.classList.add('unclickable');
-        Presentation.gravityButton.disabled = true;
-        Presentation.gravityButton.removeEventListener('click', UserInput.gravityClickHandler, { once: true });
-        Presentation.rotationButton.classList.add('unclickable');
-        Presentation.rotationButton.disabled = true;
-        Presentation.rotationButton.removeEventListener('click', UserInput.rotationClickHandler, { once: true });
->>>>>>> master
+
       }
       if (State.GameState.shouldBoardRotate) {
         State.rotateBoard90deg();
       }
       if (State.GameState.shouldHaveGravity) {
-<<<<<<< HEAD
         State.giveBoardGravity(this);
-=======
-        State.gravityDrop();
->>>>>>> master
       }
       setTimeout(() => State.checkIfWinningMove(currentPlayer), 500);
     },
@@ -383,11 +324,7 @@ window.onload = function () {
       State.GameState.shouldHaveGravity = true;
       this.classList.add('unclickable');
     },
-<<<<<<< HEAD
     rotationClickHandler: function gravityClickHandler(e) {
-=======
-    rotationClickHandler: function rotationClickHandler(e) {
->>>>>>> master
       e.preventDefault();
       State.GameState.shouldBoardRotate = true;
       this.classList.add('unclickable');
@@ -398,13 +335,10 @@ window.onload = function () {
     addGravity: function () {
       Presentation.gravityButton.addEventListener('click', UserInput.gravityClickHandler, { once: true });
     },
-<<<<<<< HEAD
     addRotation: function () {
       Presentation.rotationButton.addEventListener('click', UserInput.rotationClickHandler, { once: true });
     },
     //---------------------------------------------------------------------------
-=======
->>>>>>> master
     // MOVE SWAPPING FUNCTIONALITY
     setColor: function (currentPlayer, square) {
       if (currentPlayer === 'X') {
