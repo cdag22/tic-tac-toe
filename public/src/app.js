@@ -16,16 +16,12 @@ window.onload = function () {
     return Array.prototype.slice.call(arrayLike)
   };
 
-<<<<<<< HEAD
   const buildColumnFromSquare = function (square) {
     let sqId = Number(square.id) < 4 ? 1 : (Number(square.id) < 7 ? 4 : 7);
 
     let columns = [document.getElementById(String(sqId)), document.getElementById(String(sqId + 1)), document.getElementById(String(sqId + 2))];
     return columns;
   };
-=======
-
->>>>>>> master
 
 
   //---------------------------------------------------------------------------
@@ -105,7 +101,6 @@ window.onload = function () {
       State.GameState.shouldHaveGravity = false;
       State.GameState.shouldBoardRotate = false;
     },
-    master
     getPlayerNames: function () {
       State.PlayerState.xName = prompt('Name of X:');
       State.PlayerState.oName = prompt('Name of O: ');
@@ -354,9 +349,5 @@ window.onload = function () {
 
   //---------------------------------------------------------------------------
   // INITIALIZE
-<<<<<<< HEAD
-
-=======
->>>>>>> master
   State.initialize();
 };
