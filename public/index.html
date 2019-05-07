@@ -17,64 +17,48 @@
 </head>
 
 <body>
-  <div class="jumbotron">
+
+  <header class="jumbotron">
     <h1 class="display-3 text-center">
       <span id="x"></span> <span id="x-wins">0</span> | <span id="o-wins">0</span> <span id="o"></span>
     </h1>
+  </header>
 
-  </div>
-  <!-- <div id="app"></div> -->
-  <div class="container-fluid">
+  <main class="container-fluid">
+
     <div class="row">
+<<<<<<< HEAD
+      <div class="col-2 buttons">
+        <button id="rotation-btn" class="btn btn-lg btn-dark rotation-button unclickable">Add Rotation</button>
+        <button id="gravity-btn" class="btn btn-lg btn-dark gravity-button unclickable">Add Gravity</button>
+=======
       <div class="col-2">
         <button id="rotation-btn" class="btn btn-lg btn-dark gravity-btn">Add Rotation</button>
         <button id="gravity-btn" class="btn btn-lg btn-dark gravity-btn">Add Gravity</button>
+>>>>>>> master
       </div>
     </div>
-    <!-- <div class="col-5 game-board">
-    </div> -->
 
     <div class="row">
       <div class="col-6 game-board">
-
         <div id="board-row-1" class="board-row">
-          <div class="square"></div>
-          <div class="square"></div>
-          <div class="square"></div>
+          <div id="1" class="board-col-1 square"></div>
+          <div id="4" class="board-col-2 square"></div>
+          <div id="7" class="board-col-3 square"></div>
         </div>
         <div id="board-row-2" class="board-row">
-          <div class="square"></div>
-          <div class="square"></div>
-          <div class="square"></div>
+          <div id="2" class="board-col-1 square"></div>
+          <div id="5" class="board-col-2 square"></div>
+          <div id="8" class="board-col-3 square"></div>
         </div>
         <div id="board-row-3" class="board-row">
-          <div class="square"></div>
-          <div class="square"></div>
-          <div class="square"></div>
+          <div id="3" class="board-col-1 square"></div>
+          <div id="6" class="board-col-2 square"></div>
+          <div id="9" class="board-col-3 square"></div>
         </div>
       </div>
     </div>
-    <!-- <div class="row">
-      <div class="col-5 game-board">
-        <table class="table table-bordere table-dar">
-          <tr id="board-row-1">
-            <td class="square"></td>
-            <td class="square"></td>
-            <td class="square"></td>
-          </tr>
-          <tr id="board-row-2">
-            <td class="square"></td>
-            <td class="square"></td>
-            <td class="square"></td>
-          </tr>
-          <tr id="board-row-3">
-            <td class="square"></td>
-            <td class="square"></td>
-            <td class="square"></td>
-          </tr>
-        </table>
-      </div> -->
-  </div>
+  </main>
 </body>
 
 </html>

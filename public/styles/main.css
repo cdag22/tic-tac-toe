@@ -96,13 +96,22 @@ td:hover {
 
 
 
-.col-1 {
+
+
+/*--------------------------------------------------------------------------- 
+* BUTTON
+*/
+.buttons {
   display: flex;
   justify-content: center;
   align-content: center;
   margin: auto;
 }
 
+<<<<<<< HEAD
+.rotation-button,
+.gravity-button {
+=======
 
 /*--------------------------------------------------------------------------- 
  * BUTTON
@@ -116,12 +125,18 @@ td:hover {
 
 .rotation-btn,
 .gravity-btn {
+>>>>>>> master
   margin: 0 1rem 0 1rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
 }
 
+<<<<<<< HEAD
+.rotation-button:target,
+.gravity-button:target {
+=======
 .rotation-btn:target,
 .gravity-btn:target {
+>>>>>>> master
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0);
 }
 
