@@ -77,9 +77,24 @@ td:hover {
   background: #38f3e0;
 } */
 
-.square:hover {
-  box-shadow: 0 2rem 5rem rgba(0, 0, 0, 0.8);
+#board-row-1 .square:hover {
+  background: #25282c;
+  box-shadow: 0 -1rem 5rem rgba(0, 0, 0, 1);
 }
+
+#board-row-2 .square:hover {
+  background: #25282c;
+  box-shadow: 0 0rem 8rem rgba(0, 0, 0, 1);
+}
+
+
+#board-row-3 .square:hover {
+  background: #25282c;
+  box-shadow: 0 1rem 5rem rgba(0, 0, 0, 1);
+}
+
+
+
 
 .col-1 {
   display: flex;
@@ -97,8 +112,13 @@ td:hover {
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
 }
 
-.gravity-btn:focus {
-  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0.5);
+.gravity-btn:target {
+  box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0);
+}
+
+.unclickable {
+  color: black;
+  box-shadow: 0 0 0 rgba(0,0,0,0);
 }
 
 

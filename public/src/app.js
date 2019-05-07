@@ -16,6 +16,10 @@ window.onload = function () {
     return Array.prototype.slice.call(arrayLike)
   };
 
+  const getFullRows = function (rows) {
+    return convertToArray(rows).map(item => convertToArray(item.children));
+  };
+
 
   //---------------------------------------------------------------------------
   // GLOBALS
@@ -31,7 +35,8 @@ window.onload = function () {
       xWins: 0,
       oWins: 0,
       isXMove: false,
-      moveCount: 0
+      moveCount: 0,
+      shouldBoardRotate: false
     },
     // MOVE SWAPPING FUNCTIONALITY
     getTextContent: function () {
@@ -46,8 +51,10 @@ window.onload = function () {
     setWinnerGoesFirst: function (winner) {
       if (winner === 'X') {
         State.GameState.isXMove = false;
-      } else {
+      } else if (winner === 'O') {
         State.GameState.isXMove = true;
+      } else {
+        State.GameState.isXMove = !State.GameState.isXMove;
       }
     },
     emptySquares: function () {
@@ -77,9 +84,10 @@ window.onload = function () {
     resetBoard: function (winner) {
       State.setWinnerGoesFirst(winner);
       State.emptySquares();
-      UserInput.makeSquaresInteractive();
+      UserInput.initialize();
       State.incrementScore(winner);
       State.updateScoreBoard();
+      Presentation.gravityButton.classList.remove('unclickable');
     },
     getPlayerNames: function () {
       State.PlayerState.xName = prompt('Name of X:');
@@ -108,15 +116,38 @@ window.onload = function () {
     },
     checkIfWinningMove: function (currentPlayer) {
       if (State.isHorizontalWin() || State.isVerticalWin() || State.isDiagonalWin()) {
-        UserInput.makeBoardUnclickable();
+        UserInput.makeButtonsUnclickable();
         alert(`Player ${currentPlayer === 'X' ? State.PlayerState.xName : State.PlayerState.oName} Wins!`);
         State.resetBoard(currentPlayer);
       } else if (State.isBoardFull()) {
-        // setTimeout(() => , 200);
-        UserInput.makeBoardUnclickable();
+        UserInput.makeButtonsUnclickable();
         alert(`Game is a Draw`);
-        State.resetBoard();
+        State.resetBoard(null);
       }
+    },
+    // Board Rotation
+    rotateBoard90deg: function () {
+      let rows = Presentation.fullRows;
+
+      // corner roation
+      rows[0][0].before(rows[2][0]);
+      rows = Presentation.updateFullRows();
+      rows[0][3].before(rows[0][1]);
+      rows = Presentation.updateFullRows();
+      rows[2][1].before(rows[0][3]);
+      rows = Presentation.updateFullRows();
+      rows[2][0].before(rows[2][2]);
+      rows = Presentation.updateFullRows();
+
+      // inside rotation
+      rows[1][2].before(rows[0][1]);
+      rows = Presentation.updateFullRows();
+      rows[2][1].before(rows[1][3]);
+      rows = Presentation.updateFullRows();
+      rows[1][0].before(rows[2][2]);
+      rows = Presentation.updateFullRows();
+      rows[0][1].before(rows[1][1]);
+      Presentation.updateFullRows();
     }
   };
 
@@ -129,13 +160,19 @@ window.onload = function () {
     // GLOBALS
     squares: document.getElementsByClassName('square'),
     rows: document.getElementsByClassName('board-row'),
+    fullRows: getFullRows(document.getElementsByClassName('board-row')),
     columns: [getColumn(1), getColumn(2), getColumn(3)],
     leftDiagonal: [getSquare(1, 1), getSquare(2, 2), getSquare(3, 3)],
     rightDiagonal: [getSquare(3, 1), getSquare(2, 2), getSquare(1, 3)],
     xScore: document.getElementById('x-wins'),
     oScore: document.getElementById('o-wins'),
     xNameplate: document.getElementById('x'),
-    oNameplate: document.getElementById('o')
+    oNameplate: document.getElementById('o'),
+    gravityButton: document.getElementById('gravity-btn'),
+    updateFullRows: function () {
+      Presentation.fullRows = getFullRows(document.getElementsByClassName('board-row'));
+      return Presentation.fullRows;
+    }
   };
 
 
@@ -145,17 +182,22 @@ window.onload = function () {
   let UserInput = {
     //---------------------------------------------------------------------------
     // EVENT LISTENERS
+    initialize: function () {
+      UserInput.makeSquaresInteractive();
+      UserInput.addGravity();
+    },
     makeSquaresInteractive: function () {
       for (let i = 0; i < Presentation.squares.length; i++) {
         let sq = Presentation.squares[i];
         sq.addEventListener('click', UserInput.clickHandler, { once: true });
       }
     },
-    makeBoardUnclickable: function () {
+    makeButtonsUnclickable: function () {
       for (let i = 0; i < Presentation.squares.length; i++) {
         let sq = Presentation.squares[i];
         sq.removeEventListener('click', UserInput.clickHandler, { once: true });
       }
+      Presentation.gravityButton.removeEventListener('click', UserInput.gravityClickHandler, { once: true });
     },
     clickHandler: function clickHandler(e) {
       e.preventDefault();
@@ -163,7 +205,18 @@ window.onload = function () {
       UserInput.setColor(currentPlayer, this);
       this.textContent = currentPlayer;
       State.GameState.moveCount++;
+      if (State.GameState.shouldBoardRotate) {
+        State.rotateBoard90deg();
+      }
       setTimeout(() => State.checkIfWinningMove(currentPlayer), 500);
+    },
+    gravityClickHandler: function gravityClickHandler(e) {
+      e.preventDefault();
+      State.GameState.shouldBoardRotate = true;
+      this.classList.add('unclickable');
+    },
+    addGravity: function () {
+      Presentation.gravityButton.addEventListener('click', UserInput.gravityClickHandler, { once: true });
     },
     //---------------------------------------------------------------------------
     // MOVE SWAPPING FUNCTIONALITY
@@ -183,5 +236,5 @@ window.onload = function () {
   // INITIALIZE
 
   // State.getPlayerNames();
-  UserInput.makeSquaresInteractive();
+  UserInput.initialize();
 };
