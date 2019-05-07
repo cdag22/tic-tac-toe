@@ -107,11 +107,20 @@ td:hover {
 /*--------------------------------------------------------------------------- 
  * BUTTON
  */
-.gravity-btn {
+ .col-2 {
+   display: flex;
+  flex-direction: row;
+  justify-content: center;
   margin: auto;
+ }
+
+.rotation-btn,
+.gravity-btn {
+  margin: 0 1rem 0 1rem;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.5);
 }
 
+.rotation-btn:target,
 .gravity-btn:target {
   box-shadow: 0 0.5rem 2rem rgba(0, 0, 0, 0);
 }

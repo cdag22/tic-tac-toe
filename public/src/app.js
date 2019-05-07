@@ -16,13 +16,11 @@ window.onload = function () {
     return Array.prototype.slice.call(arrayLike)
   };
 
-  const getFullRows = function (rows) {
-    return convertToArray(rows).map(item => convertToArray(item.children));
-  };
+
 
 
   //---------------------------------------------------------------------------
-  // GLOBALS
+  // STATE
 
   let State = {
     PlayerState: {
@@ -36,7 +34,22 @@ window.onload = function () {
       oWins: 0,
       isXMove: false,
       moveCount: 0,
-      shouldBoardRotate: false
+      shouldBoardRotate: false,
+      shouldHaveGravity: false,
+    },
+    // initialize and board reset
+    initialize: function () {
+      // State.getPlayerNames();
+      UserInput.initialize();
+      Presentation.initialize();
+    },
+    resetBoard: function (winner) {
+      State.setWinnerGoesFirst(winner);
+      State.emptySquares();
+      UserInput.initialize();
+      Presentation.initialize();
+      State.incrementScore(winner);
+      State.updateScoreBoard();
     },
     // MOVE SWAPPING FUNCTIONALITY
     getTextContent: function () {
@@ -77,17 +90,9 @@ window.onload = function () {
     incrementScore: function (winner) {
       if (winner === 'X') {
         State.GameState.xWins++;
-      } else {
+      } else if (winner == 'O') {
         State.GameState.oWins++;
       }
-    },
-    resetBoard: function (winner) {
-      State.setWinnerGoesFirst(winner);
-      State.emptySquares();
-      UserInput.initialize();
-      State.incrementScore(winner);
-      State.updateScoreBoard();
-      Presentation.gravityButton.classList.remove('unclickable');
     },
     getPlayerNames: function () {
       State.PlayerState.xName = prompt('Name of X:');
@@ -97,7 +102,7 @@ window.onload = function () {
     },
     // WIN CALCULATION
     isVerticalWin: function () {
-      let colValues = Presentation.columns.map(col => convertToArray(col).map(item => item.textContent));
+      let colValues = Presentation.columns.map(col => col.map(item => item.textContent));
       return colValues.some(col => col.every(value => value === col[0] && col[0] !== ''));
     },
     isHorizontalWin: function () {
@@ -148,20 +153,59 @@ window.onload = function () {
       rows = Presentation.updateFullRows();
       rows[0][1].before(rows[1][1]);
       Presentation.updateFullRows();
+    },
+    gravityDrop: function () {
+      let cols = Presentation.updateColumns();
+      console.log('cols', cols);
+      for (let i = 0; i < cols.length; i++) {
+        let target = null;
+        for (let k = 0; k < cols[i].length; k++) {
+          let item = cols[i][k];
+          if (item.classList.contains('red-bg') || item.classList.contains('blue-bg')) {
+            target = item;
+            let targetI = i;
+            let targetK = k;
+            k++
+            while (k < cols.length) {
+              item = cols[i][k];
+              if (!item.classList.contains('red-bg') && !item.classList.contains('blue-bg')) {
+                if (i > 0) {
+                  item.before(target);
+                  cols[i - 1][targetK].after(item);
+                  // } else {
+                  //   item.after(target);
+                  //   console.log(Presentation.updateColumns());
+                  //   debugger;
+                  //   cols[0][targetK].before(cols[0][targetK]);
+                  //   break;
+                  //   // cols[i][targetK].before(item);
+                }
+                targetK++;
+                k++;
+              } else {
+                break;
+              }
+            }
+            break;
+          }
+        }
+      }
+      cols = Presentation.updateColumns();
+      console.log('cols', cols);
     }
   };
 
 
 
-
+  //---------------------------------------------------------------------------
+  // PRESENTATION
 
   let Presentation = {
-    //---------------------------------------------------------------------------
     // GLOBALS
     squares: document.getElementsByClassName('square'),
     rows: document.getElementsByClassName('board-row'),
-    fullRows: getFullRows(document.getElementsByClassName('board-row')),
-    columns: [getColumn(1), getColumn(2), getColumn(3)],
+    fullRows: null,
+    columns: null,
     leftDiagonal: [getSquare(1, 1), getSquare(2, 2), getSquare(3, 3)],
     rightDiagonal: [getSquare(3, 1), getSquare(2, 2), getSquare(1, 3)],
     xScore: document.getElementById('x-wins'),
@@ -169,9 +213,23 @@ window.onload = function () {
     xNameplate: document.getElementById('x'),
     oNameplate: document.getElementById('o'),
     gravityButton: document.getElementById('gravity-btn'),
+    rotationButton: document.getElementById('rotation-btn'),
     updateFullRows: function () {
-      Presentation.fullRows = getFullRows(document.getElementsByClassName('board-row'));
+      let rows = Presentation.rows;
+      Presentation.fullRows = convertToArray(rows).map(item => convertToArray(item.children));
       return Presentation.fullRows;
+    },
+    updateColumns: function () {
+      Presentation.columns = [convertToArray(getColumn(1)), convertToArray(getColumn(2)), convertToArray(getColumn(3)), convertToArray(getColumn(4))];
+      return Presentation.columns;
+    },
+    initialize: function () {
+      Presentation.updateFullRows();
+      Presentation.updateColumns();
+      Presentation.gravityButton.disabled = false;
+      Presentation.gravityButton.classList.remove('unclickable');
+      Presentation.rotationButton.disabled = false;
+      Presentation.rotationButton.classList.remove('unclickable');
     }
   };
 
@@ -179,12 +237,15 @@ window.onload = function () {
 
 
 
+  //---------------------------------------------------------------------------
+  // USER INPUT
+
   let UserInput = {
-    //---------------------------------------------------------------------------
     // EVENT LISTENERS
     initialize: function () {
       UserInput.makeSquaresInteractive();
       UserInput.addGravity();
+      UserInput.addRotation();
     },
     makeSquaresInteractive: function () {
       for (let i = 0; i < Presentation.squares.length; i++) {
@@ -197,7 +258,6 @@ window.onload = function () {
         let sq = Presentation.squares[i];
         sq.removeEventListener('click', UserInput.clickHandler, { once: true });
       }
-      Presentation.gravityButton.removeEventListener('click', UserInput.gravityClickHandler, { once: true });
     },
     clickHandler: function clickHandler(e) {
       e.preventDefault();
@@ -205,20 +265,38 @@ window.onload = function () {
       UserInput.setColor(currentPlayer, this);
       this.textContent = currentPlayer;
       State.GameState.moveCount++;
+      if (State.GameState.moveCount > 0 && State.GameState.moveCount < 2) {
+        Presentation.gravityButton.classList.add('unclickable');
+        Presentation.gravityButton.disabled = true;
+        Presentation.gravityButton.removeEventListener('click', UserInput.gravityClickHandler, { once: true });
+        Presentation.rotationButton.classList.add('unclickable');
+        Presentation.rotationButton.disabled = true;
+        Presentation.rotationButton.removeEventListener('click', UserInput.rotationClickHandler, { once: true });
+      }
       if (State.GameState.shouldBoardRotate) {
         State.rotateBoard90deg();
+      }
+      if (State.GameState.shouldHaveGravity) {
+        State.gravityDrop();
       }
       setTimeout(() => State.checkIfWinningMove(currentPlayer), 500);
     },
     gravityClickHandler: function gravityClickHandler(e) {
       e.preventDefault();
+      State.GameState.shouldHaveGravity = true;
+      this.classList.add('unclickable');
+    },
+    rotationClickHandler: function rotationClickHandler(e) {
+      e.preventDefault();
       State.GameState.shouldBoardRotate = true;
       this.classList.add('unclickable');
+    },
+    addRotation: function () {
+      Presentation.rotationButton.addEventListener('click', UserInput.rotationClickHandler, { once: true });
     },
     addGravity: function () {
       Presentation.gravityButton.addEventListener('click', UserInput.gravityClickHandler, { once: true });
     },
-    //---------------------------------------------------------------------------
     // MOVE SWAPPING FUNCTIONALITY
     setColor: function (currentPlayer, square) {
       if (currentPlayer === 'X') {
@@ -234,7 +312,5 @@ window.onload = function () {
 
   //---------------------------------------------------------------------------
   // INITIALIZE
-
-  // State.getPlayerNames();
-  UserInput.initialize();
+  State.initialize();
 };
